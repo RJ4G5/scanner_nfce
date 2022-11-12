@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -68,8 +68,20 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: const Icon(MdiIcons.barcodeScan),
+      ), 
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 60,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const []
+            ),
+          ),
+        ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
