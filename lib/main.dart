@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import 'ViewScan.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -37,7 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() {
     setState(() {
 
-      _counter++;
+       Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ViewScan(),
+            ));
     });
   }
 
