@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:logger/logger.dart' ;
 
 import 'dart:io';
 
@@ -12,6 +11,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
+import 'GetData/GetDataNFCE.dart';
+
+var log = Logger();
 
 class ViewScan extends StatefulWidget {
   const ViewScan({Key? key}) : super(key: key);
@@ -100,8 +102,9 @@ class _ViewScanState extends State<ViewScan> {
                               // ignore: prefer_const_literals_to_create_immutables
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
+                              // ignore: prefer_const_literals_to_create_immutables
                               children: [
-                                  Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD)),
+                                  const Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD)),
                                   const Text('voltar', style: TextStyle(fontSize: 10,color: Color(0xFFBDBDBD))),
 
                               ],
@@ -157,8 +160,12 @@ class _ViewScanState extends State<ViewScan> {
             print(scanData.code);
             print(scanData.format);
             
-            /* http.get(Uri.parse(scanData.code.toString())).then((html){
+            
+             getDataNFCE( url: scanData.code.toString());
+            
 
+           /*   http.get(Uri.parse(scanData.code.toString())).then((html){
+               
                 dom.Document body = parse(html.body);
                 var dataTable = body.querySelectorAll("#myTable tr");
                 dataTable.forEach((tr) {
@@ -185,10 +192,12 @@ class _ViewScanState extends State<ViewScan> {
         
        
     });
+
+
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    log.d('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Sem permisão da camera')),
