@@ -1,9 +1,9 @@
 import 'package:logger/logger.dart' ;
 
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+
 import 'package:html/dom.dart'as dom;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -41,86 +41,65 @@ class _ViewScanState extends State<ViewScan> {
 
     
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                          height: 50,
-                          width: 50,
-                          margin: const EdgeInsets.all(8),
-                          child: TextButton(
-                                    style: ButtonStyle(
-                                            backgroundColor: led == false ? MaterialStateProperty.all<Color>(Color(0xFFEEEEEE)) : MaterialStateProperty.all<Color>(Color(0xFFBDBDBD)) ,
-                                     ),
-                            
-                                    onPressed: ()  async{
-                                      
-                                       await controller?.toggleFlash();
-                                       led = (await controller?.getFlashStatus())!;
-                                      
-                                       
-                                       setState(() {
-                                 
-                                       });
-                                      
-                                    },
-                                    child: FutureBuilder(
-                                      future: controller?.getFlashStatus(),
-                                      builder: (context, snapshot) {
-                                       // led != snapshot.data! ;
-                                       
-                                        return snapshot.data == false ? const Icon(MdiIcons.lightbulbVariantOutline,color: Color(0xFFBDBDBD),) : const Icon(MdiIcons.lightbulbOn,color: Color(0xFFF5F5F5));
-                                      },
-                                    )
-                          ),
-                      ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        margin: const EdgeInsets.all(15),
-                        child: TextButton(
-                            style: ButtonStyle(
-                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
-                                       backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFEEEEEE)),
-                            ),
-                            onPressed: () async {
-                              await controller?.pauseCamera().then((value) =>   Navigator.pop(context));
-                            },
-                            child: Column(
-                              // ignore: prefer_const_literals_to_create_immutables
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                  const Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD)),
-                                  const Text('voltar', style: TextStyle(fontSize: 10,color: Color(0xFFBDBDBD))),
-
-                              ],
-                            )
-                          )
-                          
-                          ,
-                      ),
-                     
-                    ],
-                  ),
-                 
-                ],
-              ),
+          
+            
+            _buildQrView(context),
+            Container(
+              height: 80,
+              width: 80,
+              margin: EdgeInsets.only(top: 50,left: 30),
+             
+              child: TextButton(
+                    style: ButtonStyle(
+                                 shape:  MaterialStateProperty.all<CircleBorder>(const CircleBorder()),
+                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+                                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 238, 238, 238)),
+                    ),
+                    onPressed: () async {
+                      await controller?.pauseCamera().then((value) =>   Navigator.pop(context));
+                    },
+                    child: const Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD),size: 40)
+              ) ,
             ),
-          )
+            Align(
+              alignment: Alignment.bottomCenter,
+              child:Container(
+                  height:80,
+                  width: 80,
+                  margin: EdgeInsets.only(bottom: 50),
+                  
+                  child: TextButton(
+                          style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+                                  shape:  MaterialStateProperty.all<CircleBorder>(const CircleBorder()),
+                                  backgroundColor: led == false ? MaterialStateProperty.all<Color>(Color.fromARGB(0, 238, 238, 238)) : MaterialStateProperty.all<Color>(Color.fromARGB(108, 189, 189, 189)) ,
+                            ),
+                  
+                          onPressed: ()  async{
+                            
+                              await controller?.toggleFlash();
+                              led = (await controller?.getFlashStatus())!;
+                            
+                              
+                              setState(() {
+                        
+                              });
+                            
+                          },
+                          child: FutureBuilder(
+                            future: controller?.getFlashStatus(),
+                            builder: (context, snapshot) {
+                              // led != snapshot.data! ;
+                              
+                              return snapshot.data == false ? const Icon(MdiIcons.lightbulbVariantOutline,color: Color(0xFFBDBDBD),size: 40,) : const Icon(MdiIcons.lightbulbOn,color: Color(0xFFF5F5F5),size: 40);
+                            },
+                          )
+                  ),
+              ) ,
+            ),
+          
         ],
       ),
     );
@@ -164,26 +143,7 @@ class _ViewScanState extends State<ViewScan> {
              getDataNFCE( url: scanData.code.toString());
             
 
-           /*   http.get(Uri.parse(scanData.code.toString())).then((html){
-               
-                dom.Document body = parse(html.body);
-                var dataTable = body.querySelectorAll("#myTable tr");
-                dataTable.forEach((tr) {
-                    //print(element.runtimeType);
-                    var value = tr.getElementsByTagName("td");
-                    
-                      print(value[0].getElementsByTagName("h7")[0].text); // produto
-                      print(value[1].text); //quantidade
-                      print(value[2].text); // unidade
-                      var dinheiro = value[3].text.split(r": R$ "); // preço
-                      print(double.parse(dinheiro[dinheiro.length-1].replaceAll(",", ".")) );
-                      print("--------------------");
-                });
-              
-
-               
-                Navigator.pop(context);
-             });  */
+          
         });
         
 
