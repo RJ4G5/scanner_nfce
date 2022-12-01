@@ -1,17 +1,11 @@
 import 'package:logger/logger.dart' ;
 
-import 'dart:io';
+
 import 'package:flutter/material.dart';
-
-
-import 'package:html/dom.dart'as dom;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:html/parser.dart' show parse;
-import 'package:http/http.dart' as http;
-
 import 'GetData/GetDataNFCE.dart';
+
 
 var log = Logger();
 
@@ -140,7 +134,7 @@ class _ViewScanState extends State<ViewScan> {
             print(scanData.format);
             
             
-             getDataNFCE( url: scanData.code.toString());
+            getDataNFCE( url: scanData.code.toString());
             
 
           

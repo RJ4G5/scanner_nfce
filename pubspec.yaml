@@ -42,6 +42,8 @@ dependencies:
   html: ^0.15.1
   http: ^0.13.5
   logger: ^1.1.0
+  localstore: ^1.2.3
+  easy_mask: ^2.0.1
 
 dev_dependencies:
   flutter_test:
