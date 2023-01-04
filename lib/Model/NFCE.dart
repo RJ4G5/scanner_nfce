@@ -16,8 +16,7 @@ class NFCE{
   NFCE({ this.NomeFantasia, });
 }
 
-class Itens{
-  int ?id;
+class Itens{  
   String ?Descricao;
   double ?Quantidade;
   String ?Unidade;

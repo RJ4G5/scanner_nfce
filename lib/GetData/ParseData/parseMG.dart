@@ -18,22 +18,45 @@ class ParseMG{
         http.get(uri).then((html){
                 
                 DOM.Document body = parse(html.body);
-                var dataTable = body.querySelectorAll("#myTable tr");
-                var key  = body.querySelector("#collapseTwo table tr > td")?.text;
-                 log.d(key.toString().replaceAll(RegExp(r"[^0-9]"),""));
-                dataTable.forEach((tr) {
+
+                // header do documento
+                var header = body.querySelectorAll(".ui-outputpanel table")[0].querySelectorAll("tr");
+                String NomeEmpresarial = header[1].text.trim(); //tr[1]
+                String CNPJ = header[2].text.trim().split(" ")[1]; // mesma linha tr[2]
+                String InscricaoEstadual = header[2].text.trim().split(" ")[5]; // mesma linhatr[2]
+                String Endereco = header[3].text.trim(); //tr[3]                ;
+                // fim do header 
+               
+               //produtos
+                List ListProdutos = [];               
+                var a = body.querySelectorAll("#myTable tr");
+                a.forEach((b) {
                     //print(element.runtimeType);
-                    var value = tr.getElementsByTagName("td");
-                    
-                      print(value[0].getElementsByTagName("h7")[0].text); // produto
-                      print(value[1].text); //quantidade
-                      print(value[2].text); // unidade
-                      var dinheiro = value[3].text.split(r": R$ "); // preço
-                      print(double.parse(dinheiro[dinheiro.length-1].replaceAll(",", ".")) );
-                      print("--------------------");
+                      
+                      var value = b.getElementsByTagName("td");
+                      ListProdutos.add({
+                        "Descricao": value[0].getElementsByTagName("h7")[0].text.trim(),
+                        "Quantidade": value[1].text.split(" ")[4],
+                        "Unidade": value[2].text.split(" ")[1],
+                        "Valor": value[3].text.toString().split(" ")[4].replaceAll(",", "."),
+
+                      });
+                     // produto
+                     
+                     
 
                       
                 });
+                log.d(ListProdutos);
+
+                //fim produtos
+
+
+                // Outras informações 
+                 String? chave  = body.querySelector("#collapseTwo table tr > td")?.text.toString().replaceAll(RegExp(r"[^0-9]"),""); // chave
+                
+
+
 
                 
 
