@@ -134,7 +134,7 @@ class _ViewScanState extends State<ViewScan> {
             print(scanData.format);
             
             
-            getDataNFCE( url: scanData.code.toString());
+            getDataNFCE( url: scanData.code.toString(), context:context );
             
 
           
