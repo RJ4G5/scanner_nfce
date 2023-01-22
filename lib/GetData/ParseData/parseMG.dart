@@ -66,18 +66,24 @@ class ParseMG{
 
 
                 
-
-                db.collection('NFCEs').doc(chave).set({
-                  'Chave':chave,
-                  'NomeFantasia': '',
-                  'NomeEmpresarial': NomeEmpresarial,
-                  'Cnpj': CNPJ,
-                  'InscricaoEstadual': InscricaoEstadual,
-                  'Endereco': Endereco,                 
-                  'ValorTotal': ValorTotal,
-                  'ListaProdutos': ListProdutos,
-                 
+                db.collection('NFCEs').doc(chave).get().then((doc){
+                    print(doc);
+                    if(doc == null){
+                        db.collection('NFCEs').doc(chave).set({
+                          'Chave':chave,
+                          'NomeFantasia': '',
+                          'NomeEmpresarial': NomeEmpresarial,
+                          'Cnpj': CNPJ,
+                          'InscricaoEstadual': InscricaoEstadual,
+                          'Endereco': Endereco,                 
+                          'ValorTotal': ValorTotal,
+                          'ListaProdutos': ListProdutos,
+                        
+                        });
+                    }
+                    
                 });
+            
            
                
 

@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:localstore/localstore.dart';
 import 'ViewScan.dart';
+// ignore: prefer_const_constructors
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -38,14 +39,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final db = Localstore.instance;
+   List<Map<String, dynamic>> list_NFCEs = [ ];
 
   void _incrementCounter() {
     setState(() {
-
+      
        Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const ViewScan(),
             ));
     });
+  }
+
+  void listAllNFCEs() async{
+    print("listAllNFCEs");
+
+     
+      db.collection('NFCEs').get().then((docs) {
+        if(docs != null){
+        
+         docs.forEach((key, value) {list_NFCEs.add(value);});
+         setState(() {});
+        }
+     
+          
+
+      });
+    
+    
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listAllNFCEs();
   }
 
   @override
@@ -60,15 +87,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
         child: Column(
 
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Container(
+              height: 200,
+              // ignore: prefer_const_constructors
+              decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(15, 0, 0, 0),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                   // changes position of shadow
+                  ),
+                  
+                ],
+              ),
+              
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: list_NFCEs.length,
+                itemBuilder: (context, index) {
+                  return Text(list_NFCEs[index]["NomeEmpresarial"]);
+                },
+              )
+            )
           ],
         ),
       ),
@@ -92,3 +138,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
