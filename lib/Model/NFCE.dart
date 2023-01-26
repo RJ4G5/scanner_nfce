@@ -10,6 +10,8 @@ class NFCE{
   String ?Endereco;
   String ?Chave;
   String ?ValorTotal;
+  String ?Hora;
+  String ?Data;
   List<Itens> ? ListProdutos;
 
   

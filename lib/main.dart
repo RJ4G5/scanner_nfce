@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:localstore/localstore.dart';
 import 'ViewScan.dart';
+// ignore
 // ignore: prefer_const_constructors
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -111,7 +112,95 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: list_NFCEs.length,
                 itemBuilder: (context, index) {
-                  return Text(list_NFCEs[index]["NomeEmpresarial"]);
+                
+                  return Container(
+                    height: 100,
+                    margin: EdgeInsets.only(left: 10, right: 10,top: 5),
+              
+                   
+                    
+                    child: Row(
+                      children: [
+                        // ! Data da nota
+                        Container(
+                          height: double.infinity,
+                          width: 50,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                "18:00",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF455A64),
+                                  fontSize: 13
+                                ),
+                              ),
+                              Text(
+                                "18 JAN",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF455A64),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+
+                        ),
+                        Expanded(
+                          // ! preview da nota
+                          child: Container(
+                            
+                            padding: EdgeInsets.only(left: 10,top: 5),
+                            // ignore: prefer_const_constructors
+                            decoration: BoxDecoration(
+                                
+                                gradient: LinearGradient(
+                                    stops: const [0.02, 0.02],
+                                    colors: const [Colors.red, Colors.white]
+                                ),
+
+                                borderRadius: BorderRadius.all( Radius.circular(10)),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromARGB(10, 0, 0, 0),
+                                    spreadRadius: 3,
+                                    blurRadius: 7,
+                                  // changes position of shadow
+                                  ),
+                                  
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  
+                                  Text(
+                                    list_NFCEs[index]['NomeEmpresarial'],
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.ellipsis,
+
+                                    style: TextStyle(
+                                      color: Color(0xFF455A64),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                                ]
+                              ),
+
+                          )
+                        )
+                        
+                      ]
+                    ),
+
+                  );
+                  
+                  
+                  
                 },
               )
             )
