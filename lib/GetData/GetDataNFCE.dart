@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart' ;
+import 'package:http/http.dart' as http;
 
 import 'ParseData/parseMG.dart';
 var log = Logger();
@@ -18,12 +19,15 @@ class getDataNFCE{
           case "mg":
 
             log.d("Minas Gerais");
-            ParseMG(uri,context);
+            http.get(uri).then((html){
+              ParseMG(html,context);
+            });  
+            
           break;
           case "es":
 
             log.d("Epirito Santo");
-            ParseMG(uri,context);
+           // ParseMG(uri,context);
           break;
         }
 

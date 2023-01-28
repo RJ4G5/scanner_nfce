@@ -3,11 +3,23 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:localstore/localstore.dart';
 import 'ViewScan.dart';
+import 'global.dart' as global;
+import 'package:moment_dart/moment_dart.dart';
 // ignore
 // ignore: prefer_const_constructors
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+}
+
+class MyData with ChangeNotifier {
+  int _counter = 0;
+  int get counter => _counter;
+
+  void incrementCounter() {
+    _counter++;
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -16,6 +28,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+   
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -35,30 +48,30 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
+
   int _counter = 0;
   final db = Localstore.instance;
    List<Map<String, dynamic>> list_NFCEs = [ ];
 
-  void _incrementCounter() {
+  void incrementCounter() {
     setState(() {
-      
-       Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const ViewScan(),
-            ));
+
+       Navigator.of(context,rootNavigator:true).push(MaterialPageRoute( builder: (context) =>  const ViewScan(), ));
     });
   }
 
   void listAllNFCEs() async{
-    print("listAllNFCEs");
+    log.d("listAllNFCEs");
+   
 
      
       db.collection('NFCEs').get().then((docs) {
         if(docs != null){
-        
+         list_NFCEs.clear();
          docs.forEach((key, value) {list_NFCEs.add(value);});
          setState(() {});
         }
@@ -67,6 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
       });
     
+    
+  }
+  formatDate (String date){
+
+    int ano = int.parse(date.split("/")[2]);
+    int mes= int.parse(date.split("/")[1]);
+    int dia= int.parse(date.split("/")[0]);
+    return DateTime(ano,mes,dia).toMoment().format('DD MMM');
     
   }
   @override
@@ -78,6 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    global.homeState = this;
 
     return Scaffold(
       appBar: AppBar(
@@ -127,17 +150,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 50,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children:  [
                               Text(
-                                "18:00",
+                                list_NFCEs[index]['hora'].substring(0, list_NFCEs[index]['hora'].length - 3),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFF455A64),
                                   fontSize: 13
                                 ),
                               ),
-                              Text(
-                                "18 JAN",
+                              Text(                                
+                                formatDate(list_NFCEs[index]['data']),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFF455A64),
@@ -208,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: incrementCounter,
         tooltip: 'Increment',
         child: const Icon(MdiIcons.barcodeScan),
       ), 
