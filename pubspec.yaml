@@ -46,6 +46,7 @@ dependencies:
   easy_mask: ^2.0.1
   provider: ^6.0.5
   moment_dart: ^0.16.0
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:

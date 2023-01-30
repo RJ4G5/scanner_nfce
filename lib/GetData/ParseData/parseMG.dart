@@ -70,30 +70,32 @@ class ParseMG{
 
 
 
-            
-            db.collection('NFCEs').doc(chave).get().then((doc){
-                //print(doc);
-                if(doc == null){
-                    db.collection('NFCEs').doc(chave).set({
+            Map<String, dynamic> nfce = {
                       'Chave':chave,
                       'NomeFantasia': '',
                       'NomeEmpresarial': NomeEmpresarial,
                       'Cnpj': CNPJ,
                       'InscricaoEstadual': InscricaoEstadual,
                       'Endereco': Endereco,                 
-                      'ValorTotal': ValorTotal,
+                      'ValorTotal': ValorTotal.roundToDouble(),
                       "data": data,
                       "hora": hora,
                       'ListaProdutos': ListProdutos,
                     
-                    });
+                    };
+            db.collection('NFCEs').doc(chave).get().then((doc){
+                //print(doc);
+
+                if(doc == null){
+                    global.homeState.addCardNFCE(nfce);
+                    db.collection('NFCEs').doc(chave).set(nfce);
                 }
                 
             });
         
         
             
-            global.homeState.listAllNFCEs();
+            
             Navigator.pop(context);
              
 

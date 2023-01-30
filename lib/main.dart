@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:localstore/localstore.dart';
 import 'ViewScan.dart';
+import 'Views/card_nfce/card_nfce.dart';
 import 'global.dart' as global;
 import 'package:moment_dart/moment_dart.dart';
 // ignore
@@ -55,8 +59,16 @@ class MyHomePageState extends State<MyHomePage> {
 
   int _counter = 0;
   final db = Localstore.instance;
-   List<Map<String, dynamic>> list_NFCEs = [ ];
+  List<Map<String, dynamic>> list_NFCEs = [ ];
+  
+  void addCardNFCE(Map<String, dynamic> cardNFCE){
 
+      Timer(Duration(milliseconds: 200), (){
+          list_NFCEs.add(cardNFCE);    
+          setState(() {});
+      });
+      
+  }
   void incrementCounter() {
     setState(() {
 
@@ -68,7 +80,7 @@ class MyHomePageState extends State<MyHomePage> {
     log.d("listAllNFCEs");
    
 
-     
+
       db.collection('NFCEs').get().then((docs) {
         if(docs != null){
          list_NFCEs.clear();
@@ -82,14 +94,7 @@ class MyHomePageState extends State<MyHomePage> {
     
     
   }
-  formatDate (String date){
-
-    int ano = int.parse(date.split("/")[2]);
-    int mes= int.parse(date.split("/")[1]);
-    int dia= int.parse(date.split("/")[0]);
-    return DateTime(ano,mes,dia).toMoment().format('DD MMM');
-    
-  }
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -101,134 +106,58 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     global.homeState = this;
+    
 
     return Scaffold(
       appBar: AppBar(
 
         title: Text(widget.title),
       ),
-      body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 200,
-              // ignore: prefer_const_constructors
-              decoration: BoxDecoration(
-                color: Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(15, 0, 0, 0),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                   // changes position of shadow
+      body:  Container(
+          
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 200,
+                  // ignore: prefer_const_constructors
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(15, 0, 0, 0),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                      // changes position of shadow
+                      ),
+                      
+                    ],
                   ),
                   
-                ],
-              ),
-              
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: list_NFCEs.length,
-                itemBuilder: (context, index) {
-                
-                  return Container(
-                    height: 100,
-                    margin: EdgeInsets.only(left: 10, right: 10,top: 5),
-              
-                   
+                ),
+                Expanded(
+                  child: ListView.builder(               
                     
-                    child: Row(
-                      children: [
-                        // ! Data da nota
-                        Container(
-                          height: double.infinity,
-                          width: 50,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:  [
-                              Text(
-                                list_NFCEs[index]['hora'].substring(0, list_NFCEs[index]['hora'].length - 3),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xFF455A64),
-                                  fontSize: 13
-                                ),
-                              ),
-                              Text(                                
-                                formatDate(list_NFCEs[index]['data']),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xFF455A64),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              )
-                            ],
-                          ),
+                                       
 
-                        ),
-                        Expanded(
-                          // ! preview da nota
-                          child: Container(
-                            
-                            padding: EdgeInsets.only(left: 10,top: 5),
-                            // ignore: prefer_const_constructors
-                            decoration: BoxDecoration(
-                                
-                                gradient: LinearGradient(
-                                    stops: const [0.02, 0.02],
-                                    colors: const [Colors.red, Colors.white]
-                                ),
-
-                                borderRadius: BorderRadius.all( Radius.circular(10)),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromARGB(10, 0, 0, 0),
-                                    spreadRadius: 3,
-                                    blurRadius: 7,
-                                  // changes position of shadow
-                                  ),
-                                  
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  
-                                  Text(
-                                    list_NFCEs[index]['NomeEmpresarial'],
-                                    textAlign: TextAlign.start,
-                                    overflow: TextOverflow.ellipsis,
-
-                                    style: TextStyle(
-                                      color: Color(0xFF455A64),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  )
-                                ]
-                              ),
-
-                          )
-                        )
-                        
-                      ]
-                    ),
-
-                  );
-                  
-                  
-                  
-                },
-              )
-            )
-          ],
-        ),
+                    itemCount: list_NFCEs.length,
+                    itemBuilder: (context, index) {
+                      int reverseIndex = list_NFCEs.length - 1 - index;
+                    
+                      return CardNFCE(list_NFCEs[reverseIndex]);
+                      
+                      
+                      
+                    },
+                  )
+                )
+              ],
+            ),
+        
+        
+        
+        
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: incrementCounter,

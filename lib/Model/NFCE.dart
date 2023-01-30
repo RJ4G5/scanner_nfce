@@ -13,9 +13,11 @@ class NFCE{
   String ?Hora;
   String ?Data;
   List<Itens> ? ListProdutos;
+  
 
   
   NFCE({ this.NomeFantasia, });
+  
 }
 
 class Itens{  
