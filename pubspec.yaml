@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.0.5
   moment_dart: ^0.16.0
   animate_do: ^3.0.2
+  ticketview: ^1.0.0
 
 dev_dependencies:
   flutter_test:

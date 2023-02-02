@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -60,11 +61,13 @@ class MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final db = Localstore.instance;
   List<Map<String, dynamic>> list_NFCEs = [ ];
-  
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   void addCardNFCE(Map<String, dynamic> cardNFCE){
 
       Timer(Duration(milliseconds: 200), (){
-          list_NFCEs.add(cardNFCE);    
+         //list_NFCEs.add(cardNFCE);    
+         list_NFCEs.insert(0,cardNFCE);
+         listKey.currentState?.insertItem(0);
           setState(() {});
       });
       
@@ -84,8 +87,16 @@ class MyHomePageState extends State<MyHomePage> {
       db.collection('NFCEs').get().then((docs) {
         if(docs != null){
          list_NFCEs.clear();
-         docs.forEach((key, value) {list_NFCEs.add(value);});
-         setState(() {});
+         int index = 0;
+         final reverseDocs = LinkedHashMap.fromEntries(docs.entries.toList().reversed);
+         reverseDocs.forEach((key, value) {           
+            list_NFCEs.add(value);
+            listKey.currentState?.insertItem(index);
+            index +=1;
+         });
+      
+         
+            setState(() {});
         }
      
           
@@ -137,20 +148,27 @@ class MyHomePageState extends State<MyHomePage> {
                   
                 ),
                 Expanded(
-                  child: ListView.builder(               
-                    
-                                       
+                  child: AnimatedList(
+                      key: listKey,
 
-                    itemCount: list_NFCEs.length,
-                    itemBuilder: (context, index) {
+                      initialItemCount:list_NFCEs.length ,
+                     itemBuilder: (context, index, animation) {
                       int reverseIndex = list_NFCEs.length - 1 - index;
-                    
-                      return CardNFCE(list_NFCEs[reverseIndex]);
+                     // print("reverse: $reverseIndex");
+                      
+                      return SizeTransition(
+                        
+                        sizeFactor: animation,
+                        child: CardNFCE(list_NFCEs[index],index),
+                      );
                       
                       
                       
-                    },
+                    }
+
                   )
+                  
+                  
                 )
               ],
             ),

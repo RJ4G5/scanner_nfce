@@ -3,11 +3,17 @@ import 'dart:math';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:ticketview/ticketview.dart';
 import './../../global.dart' as global;
 class CardNFCE extends StatelessWidget {
+
   Map<String, dynamic> nfce;
+  late AnimationController animateController;
+  int index;
   List<Color> list_color = [Color(0xFFE91E63),Color(0xFF512DA8),Color(0xFF558B2F),Color(0xFF1976D2),Color(0xFFF57C00)];
-  CardNFCE(this.nfce, {Key? key}) : super(key: key);
+ 
+  CardNFCE(this.nfce, this.index, {Key? key}) : super(key: key);
+
   formatDate (String date){
 
     int ano = int.parse(date.split("/")[2]);
@@ -18,11 +24,19 @@ class CardNFCE extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-  
-    return ZoomIn(
-              key: nfce['chave'],  
+   
+   
+     print("index: $index");
+    return InkWell( 
+                onTap: () {  
+                  print(nfce['NomeEmpresarial']);  
+                  print("index: $index");
+                  print(nfce['registro']);
+                
+                               
               
-              child:Container(
+                },                         
+                child: Container(
                           height: 90,
                           margin: EdgeInsets.only(left: 10, right: 10,top: 5),  
                           
@@ -117,7 +131,7 @@ class CardNFCE extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "R\$ ${nfce['ValorTotal'].toStringAsFixed(2)}",
+                                                  "R\$ ${nfce['ValorTotal']}",
                                                   textAlign: TextAlign.start,
                                                   overflow: TextOverflow.ellipsis,
 
@@ -170,7 +184,12 @@ class CardNFCE extends StatelessWidget {
                             ]
                           ),
 
-                        ) 
+                        )                         
+                                  
+            
+              
+              
+              
               );
   }
 }

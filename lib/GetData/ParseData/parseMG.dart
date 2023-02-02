@@ -13,6 +13,7 @@ import 'package:localstore/localstore.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:meu_mercado/main.dart';
+import 'package:moment_dart/moment_dart.dart';
 import './../../global.dart' as global;
 final log = Logger();
 final db = Localstore.instance;
@@ -40,8 +41,9 @@ class ParseMG{
                 //print(element.runtimeType);
                   
                   var value = b.getElementsByTagName("td");
-                  String valor = value[3].text.toString().split(" ")[4].replaceAll(",", ".");
+                  String valor = value[3].text.toString().split(" ")[4].replaceAll(",", ".").trim();
                   ValorTotal +=  double.parse(valor);
+                  print(valor);
                   ListProdutos.add({
                     "Descricao": value[0].getElementsByTagName("h7")[0].text.trim(),
                     "Quantidade": value[1].text.split(" ")[4],
@@ -55,7 +57,8 @@ class ParseMG{
 
                   
             });
-            log.d(ListProdutos);
+            print(ValorTotal.toStringAsPrecision(4));
+            //log.d(ListProdutos);
 
             //fim produtos
 
@@ -77,12 +80,19 @@ class ParseMG{
                       'Cnpj': CNPJ,
                       'InscricaoEstadual': InscricaoEstadual,
                       'Endereco': Endereco,                 
-                      'ValorTotal': ValorTotal.roundToDouble(),
+                      'ValorTotal': ValorTotal.toStringAsPrecision(4),
                       "data": data,
                       "hora": hora,
                       'ListaProdutos': ListProdutos,
+                      'registro':{
+                        'data':  DateTime.now().toMoment().format("DD/MM/YYYY"),
+                        'hora': DateTime.now().toMoment().format("HH:mm")
+                      }
                     
                     };
+
+            //global.homeState.addCardNFCE(nfce);
+            
             db.collection('NFCEs').doc(chave).get().then((doc){
                 //print(doc);
 
@@ -92,8 +102,7 @@ class ParseMG{
                 }
                 
             });
-        
-        
+      
             
             
             Navigator.pop(context);
