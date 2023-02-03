@@ -10,6 +10,7 @@ import 'ViewScan.dart';
 import 'Views/card_nfce/card_nfce.dart';
 import 'global.dart' as global;
 import 'package:moment_dart/moment_dart.dart';
+import 'package:ticketview/ticketview.dart';
 // ignore
 // ignore: prefer_const_constructors
 void main() {

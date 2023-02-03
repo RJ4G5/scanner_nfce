@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:meu_mercado/Views/ticket/Ticket.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:ticketview/ticketview.dart';
 import './../../global.dart' as global;
@@ -32,8 +33,17 @@ class CardNFCE extends StatelessWidget {
                   print(nfce['NomeEmpresarial']);  
                   print("index: $index");
                   print(nfce['registro']);
-                
-                               
+                  
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(
+                      
+                      backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                      insetPadding: EdgeInsets.only(bottom: 10,top: 10,left: 30, right: 30),
+                      child: Ticket(nfce),
+                      
+                    ),
+                  );        
               
                 },                         
                 child: Container(
