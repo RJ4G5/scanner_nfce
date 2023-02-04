@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meu_mercado/Model/NFCE.dart';
 import 'package:ticketview/ticketview.dart';
-
+import 'package:data_table_2/data_table_2.dart';
 
 class Ticket extends StatelessWidget{
 
@@ -11,11 +11,35 @@ class Ticket extends StatelessWidget{
 
   Ticket(this.nfce,  {Key? key}) : super(key: key);
 
+  List<DataRow> getProdutos(List<dynamic> d){
+   List<DataRow> list = [];
+   
+   d.forEach((item) {
+      list.add(DataRow(
+        cells:[
+                DataCell(Text(item['Descricao'],style: TextStyle(fontFamily:"CourieNew",fontSize: 11))),
+                DataCell( Align(alignment: Alignment.center ,child:Text(double.parse(item['Quantidade']).toStringAsPrecision(3),style: TextStyle(fontFamily:"CourieNew",fontSize: 11))) ),
+                DataCell( Align(alignment: Alignment.center ,child:Text(item['Unidade'],style: TextStyle(fontFamily:"CourieNew",fontSize: 11)))),                
+                DataCell(Align(alignment: Alignment.centerLeft ,child:Text("R\$ ${item['Valor']}",style: TextStyle(fontFamily:"CourieNew",fontSize: 11))))
+              
+              ]
+        )
+      );
+      
+   });
+    
+    
+
+
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       color:  Color.fromARGB(0, 255, 255, 255),
+      height: 600,
       //padding: EdgeInsets.all(10),
       child: TicketView(
                   
@@ -27,7 +51,7 @@ class Ticket extends StatelessWidget{
 
                 borderRadius: 6,
                 drawDivider: true,
-                trianglePos: .6,
+                trianglePos: .8,
                 child: Padding(
                   padding: EdgeInsets.only(top: 15,left: 10,right: 10,bottom: 10),
                   child: Column(
@@ -36,52 +60,75 @@ class Ticket extends StatelessWidget{
                       Container(
                         child: Column(
                           children: [
-                            Text(nfce['NomeEmpresarial'],textAlign:TextAlign.center ,style: TextStyle(fontFamily:"CourieNew", fontSize: 15,fontWeight: FontWeight.bold ),),
+                            Container(
+                              height: 40,
+                              child: Text(nfce['NomeEmpresarial'],textAlign:TextAlign.center ,style: TextStyle(fontFamily:"CourieNew", fontSize: 15,fontWeight: FontWeight.bold ),),
+
+                            ),
+                            
                             Text(nfce['Endereco'],textAlign:TextAlign.center ,style: TextStyle(fontFamily:"CourieNew", fontSize: 13 ),),
                             Text("CNPJ: ${nfce['Cnpj']}  IE: ${nfce['InscricaoEstadual']}",textAlign:TextAlign.start ,style: TextStyle(fontFamily:"CourieNew", fontSize: 12 ),)
                           ]
                         ),
 
                       ),
+                      // ! produtos
                       Container(
                         width: double.infinity,
-                        child:DataTable(
-                          border: TableBorder.all(width: 1),
-                          columnSpacing: 5,
+                        height: 325,
+                        margin: EdgeInsets.only(bottom: 25),
+                        decoration: BoxDecoration(
+                          //border: Border.all(width: 1)
+                        ),
+                        child: DataTable2(
+                            columnSpacing: 5,
+                            horizontalMargin: 0,
+                            headingRowHeight: 20,
+                            dataRowHeight: 20,
+                          
 
-
-                          headingRowHeight: 20,
-                          dataRowHeight: 20,
-                          columns: [
-                            DataColumn(label: Text("Desc.",style: TextStyle(fontSize: 11),)),
-                            DataColumn(label: Text("Quant.",style: TextStyle(fontSize: 11),)),
-                            DataColumn(label: Text("Unid.",style: TextStyle(fontSize: 11),)),
-                            DataColumn(label: Text("Valor",style: TextStyle(fontSize: 11)))
-                              
-                          ],
-                          rows: [
-                            DataRow(cells:[
-                              DataCell(
-                                Container(
-                             
-                                  child: Text("refrig coca cola",style: TextStyle(fontSize: 11))
-                                ),
-                              ),
-                              DataCell(  Text("02",style: TextStyle(fontSize: 11))
-                               
-                              ),
-                              DataCell( Text("un",style: TextStyle(fontSize: 11))
-                                ),
-                             
-                              DataCell(
-                                Text("00:00",style: TextStyle(fontSize: 11))
-                              )
-              
-                           
-                            ])
                             
+                            //border: TableBorder.all(width: 1),
+                            
+                         
+
+                          
+                            columns: [
+                              DataColumn2(size: ColumnSize.L,label:Text("Desc.",textAlign: TextAlign.center,style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),)),
+                              DataColumn2(fixedWidth: 50,label: Align(alignment: Alignment.center,child: Text("Quant.",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),),)),
+                              DataColumn2(fixedWidth: 40,label: Align(alignment: Alignment.center,child: Text("Unid.",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),),)),
+                              DataColumn2(fixedWidth: 70,label: Align(alignment: Alignment.center,child: Text("Valor",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold)),))
+                            ],
+                            rows:getProdutos(nfce['ListaProdutos']) ,
+                        )                       
+                      ),
+                       // ! rodapé
+                      Container(
+                        child: Column(
+                          
+                          children: [
+                            
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment. spaceBetween,
+                              children: [
+                                
+                                Text("Quant. total: ${nfce['ListaProdutos'].length} ",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),),
+                                Text("Total: R\$ ${nfce['ValorTotal']}",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),),
+                                
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Emisão: ${nfce['data']} ${nfce['hora']}",style: TextStyle(fontFamily:"CourieNew",fontSize: 11,fontWeight: FontWeight.bold),),
+                              ],
+                            ),
+                           Container(
+                                  width: double.infinity,
+                                  child:Text("Chave: ${nfce['Chave']}",softWrap: true,style: TextStyle(fontFamily:"CourieNew",fontSize: 11,),),
+                                )
                           ],
-                        ) ,
+                        ),
                       )
                       
 

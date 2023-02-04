@@ -57,12 +57,14 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => MyHomePageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
-  int _counter = 0;
+
   final db = Localstore.instance;
   List<Map<String, dynamic>> list_NFCEs = [ ];
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+
+
   void addCardNFCE(Map<String, dynamic> cardNFCE){
 
       Timer(Duration(milliseconds: 200), (){
@@ -119,6 +121,7 @@ class MyHomePageState extends State<MyHomePage> {
 
     global.homeState = this;
     
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -149,25 +152,55 @@ class MyHomePageState extends State<MyHomePage> {
                   
                 ),
                 Expanded(
-                  child: AnimatedList(
-                      key: listKey,
-
-                      initialItemCount:list_NFCEs.length ,
-                     itemBuilder: (context, index, animation) {
-                      int reverseIndex = list_NFCEs.length - 1 - index;
-                     // print("reverse: $reverseIndex");
-                      
-                      return SizeTransition(
+                  child:DefaultTabController(
+                    length: 3,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        toolbarHeight: 60,
                         
-                        sizeFactor: animation,
-                        child: CardNFCE(list_NFCEs[index],index),
-                      );
-                      
-                      
-                      
-                    }
+                        backgroundColor: Color(0xff607D8B),
+                        title: TabBar(
+                          indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50), // Creates border
+                              color: Color.fromARGB(43, 255, 255, 255),
+                          ),
+                         
+                          tabs: [                             
+                            Tab(text: 'Compras',),                          
+                            Tab(text: 'Mais comprados',),                            
+                          ],
+                        ),
+                      ),
+                      body: TabBarView(
+                        children: [
+                            AnimatedList(
+                                key: listKey,
 
-                  )
+                                initialItemCount:list_NFCEs.length ,
+                              itemBuilder: (context, index, animation) {
+                                int reverseIndex = list_NFCEs.length - 1 - index;
+                              // print("reverse: $reverseIndex");
+                                
+                                return SizeTransition(
+                                  
+                                  sizeFactor: animation,
+                                  child: CardNFCE(list_NFCEs[index],index),
+                                );
+                                
+                                
+                                
+                              }
+
+                            ),
+                            Center(child: Text('CATS')),
+                      
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                  
+                
                   
                   
                 )
