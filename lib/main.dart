@@ -82,29 +82,86 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 
-  void listAllNFCEs() async{
-    log.d("listAllNFCEs");
-   
+  int SimilaridadePorcent(String text1, String text2){
+      
+      int length1 = text1.length;
+      int length2 = text2.length;
+      int maxLength = max(length1, length2);
+      int count = 0;
+      for (int i = 0; i < maxLength; i++) {
+        if (i < length1 && i < length2 && text1[i] == text2[i]) {
+          count++;
+        }
+      }
+      //return (count / maxLength * 100).round();
+      double a = (100 * log(count) / log(maxLength));
+      if(a.isInfinite)
+        return 0;
+      else
+       return a.round();
+  }
+  
+  void maisFrequentes(List<dynamic> list){
 
+      List separados = [];
+
+
+      for(int i=0; i<=list.length; i++){
+        dynamic prod = list[i];
+        List<dynamic> groupTemp = [];
+        
+        for(int j=0; j<=list.length; j++){
+            dynamic prod2 = list[j];
+            int porcent = SimilaridadePorcent(prod["Descricao"],prod2["Descricao"]);
+            if(porcent >= 70){
+                groupTemp.add(prod2);
+                list.removeAt(j); // remover da lista depois que encontra
+            }           
+
+        }
+        
+        if(groupTemp.length>0)
+          groupTemp.add(prod);
+
+      }
+     
+      
+
+  }
+  void listAllNFCEs() async{
+    //log.d("listAllNFCEs");
+      final _this = this;
 
       db.collection('NFCEs').get().then((docs) {
         if(docs != null){
+          List<dynamic> todosProdutos = [ ]; 
          list_NFCEs.clear();
          int index = 0;
          final reverseDocs = LinkedHashMap.fromEntries(docs.entries.toList().reversed);
-         reverseDocs.forEach((key, value) {           
-            list_NFCEs.add(value);
-            listKey.currentState?.insertItem(index);
+         reverseDocs.forEach((key, _nfce) {           
+            list_NFCEs.add(_nfce);
+            listKey.currentState?.insertItem(index);            
             index +=1;
+
+            List<dynamic> prod  = _nfce['ListaProdutos'];
+            prod.forEach((element) {
+              todosProdutos.add(element);
+            // print("${element["Descricao"]} --> ${_nfce['NomeEmpresarial']}");
+              
+            });
          });
       
-         
+             _this.maisFrequentes(todosProdutos);
             setState(() {});
         }
      
           
 
       });
+
+   
+
+     
     
     
   }
@@ -153,7 +210,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child:DefaultTabController(
-                    length: 3,
+                    length: 2,
                     child: Scaffold(
                       appBar: AppBar(
                         toolbarHeight: 60,

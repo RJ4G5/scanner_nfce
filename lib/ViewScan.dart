@@ -10,7 +10,7 @@ import 'GetData/GetDataNFCE.dart';
 import 'global.dart' as global;
 
 
-var log = Logger();
+var logger = Logger();
 
 class ViewScan extends StatefulWidget {
 
@@ -155,7 +155,7 @@ class _ViewScanState extends State<ViewScan> {
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log.d('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    logger.d('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Sem permisão da camera')),
