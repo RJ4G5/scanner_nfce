@@ -49,6 +49,7 @@ dependencies:
   animate_do: ^3.0.2
   ticketview: ^1.0.0
   data_table_2: ^2.3.11
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:

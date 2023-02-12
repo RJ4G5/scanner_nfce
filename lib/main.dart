@@ -102,29 +102,59 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
   
   void maisFrequentes(List<dynamic> list){
+      print("maisFrequentes");
+      List grupos = [];
 
-      List separados = [];
-
-
-      for(int i=0; i<=list.length; i++){
+     /* List<String> verificados = [];
+   
+     for(int i=0; i < list.length; i++){
         dynamic prod = list[i];
-        List<dynamic> groupTemp = [];
+        List<dynamic> groupTemp = [];       
         
-        for(int j=0; j<=list.length; j++){
+        if(!verificados.contains(prod["Descricao"])){
+            for(int j=0; j<list.length; j++){ // procura em todoas a lista se prod[i] tem similares
             dynamic prod2 = list[j];
             int porcent = SimilaridadePorcent(prod["Descricao"],prod2["Descricao"]);
-            if(porcent >= 70){
-                groupTemp.add(prod2);
-                list.removeAt(j); // remover da lista depois que encontra
-            }           
+            if(porcent >= 70){ 
+                verificados.add(prod2["Descricao"]); // coloca na lista de verificado             
+                groupTemp.add(prod2); // se encontrar um similar + que 70% adiciona no groupTemp
+               
+            }
+        }
 
         }
         
-        if(groupTemp.length>0)
-          groupTemp.add(prod);
+        
+        if(groupTemp.length>0){
+          verificados.add(prod["Descricao"]);
+          groupTemp.add(prod); // prod[i] foi encontrado similares, adiciona ele no groupTemp também
+          grupos.add(groupTemp);
 
+          logger.d(groupTemp);
+        }
+
+         // adicionas o grup em uma lista para serem entregues
+
+      }*/
+
+    //  logger.d(separados);
+
+    for (int i = 0; i < list.length - 1; i++) {
+      List<dynamic> groupTemp = [];   
+      for (int j = i + 1; j < list.length; j++) {
+        if (SimilaridadePorcent(list[i]["Descricao"], list[j]["Descricao"]) > 70) {
+          
+          groupTemp.add(list[i]);
+          groupTemp.add(list[j]);
+        }
       }
-     
+      if(groupTemp.length > 0)
+        grupos.add(groupTemp);
+       // logger.d(groupTemp);
+    }
+
+
+    logger.d(grupos);    
       
 
   }

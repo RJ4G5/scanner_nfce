@@ -15,9 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:meu_mercado/main.dart';
 import 'package:moment_dart/moment_dart.dart';
 import './../../global.dart' as global;
+import 'package:uuid/uuid.dart';
 final log = Logger();
 final db = Localstore.instance;
-
+var uuid = Uuid();
 class ParseMG{
   
 
@@ -45,6 +46,7 @@ class ParseMG{
                   ValorTotal +=  double.parse(valor);
                   print(valor);
                   ListProdutos.add({
+                    "ID": uuid.v4() ,
                     "Descricao": value[0].getElementsByTagName("h7")[0].text.trim(),
                     "Quantidade": value[1].text.split(" ")[4],
                     "Unidade": value[2].text.split(" ")[1],
