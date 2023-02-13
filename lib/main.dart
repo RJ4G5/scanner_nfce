@@ -139,17 +139,28 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     //  logger.d(separados);
 
+
+    List<String> verificados = [];
+
     for (int i = 0; i < list.length - 1; i++) {
       List<dynamic> groupTemp = [];   
       for (int j = i + 1; j < list.length; j++) {
-        if (SimilaridadePorcent(list[i]["Descricao"], list[j]["Descricao"]) > 70) {
+        if (SimilaridadePorcent(list[i]["Descricao"], list[j]["Descricao"]) > 70) { 
+          if(!verificados.contains(list[j]["ID"])){
+            verificados.add(list[j]["ID"]);
+            groupTemp.add(list[j]);
+          }      
           
-          groupTemp.add(list[i]);
-          groupTemp.add(list[j]);
         }
       }
-      if(groupTemp.length > 0)
-        grupos.add(groupTemp);
+      if(groupTemp.length > 0){
+          if(!verificados.contains(list[i]["ID"])){
+            verificados.add(list[i]["ID"]);
+            groupTemp.add(list[i]);
+          }
+          grupos.add(groupTemp);
+      }
+       
        // logger.d(groupTemp);
     }
 
@@ -175,13 +186,14 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
             List<dynamic> prod  = _nfce['ListaProdutos'];
             prod.forEach((element) {
+              element['Chave'] =  _nfce['Chave'];
               todosProdutos.add(element);
             // print("${element["Descricao"]} --> ${_nfce['NomeEmpresarial']}");
               
             });
          });
       
-             _this.maisFrequentes(todosProdutos);
+            // _this.maisFrequentes(todosProdutos);
             setState(() {});
         }
      
@@ -210,43 +222,14 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     
     
 
-    return Scaffold(
-      appBar: AppBar(
-
-        title: Text(widget.title),
-      ),
-      body:  Container(
-          
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: 200,
-                  // ignore: prefer_const_constructors
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromARGB(15, 0, 0, 0),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                      // changes position of shadow
-                      ),
-                      
-                    ],
-                  ),
-                  
-                ),
-                Expanded(
-                  child:DefaultTabController(
+    return DefaultTabController(
                     length: 2,
                     child: Scaffold(
                       appBar: AppBar(
-                        toolbarHeight: 60,
-                        
+                        //toolbarHeight: 60,
+                        title: Text(widget.title),
                         backgroundColor: Color(0xff607D8B),
-                        title: TabBar(
+                        bottom: TabBar(
                           indicator: BoxDecoration(
                               borderRadius: BorderRadius.circular(50), // Creates border
                               color: Color.fromARGB(43, 255, 255, 255),
@@ -283,39 +266,27 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       
                         ],
                       ),
+
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: incrementCounter,
+                          tooltip: 'Increment',
+                          child: const Icon(MdiIcons.barcodeScan),
+                        ), 
+                        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                        bottomNavigationBar: BottomAppBar(
+                            shape: const CircularNotchedRectangle(),
+                            notchMargin: 10,
+                            child: Container(
+                              height: 60,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const []
+                              ),
+                            ),
+                          )
                     ),
-                  ),
-                  
-                  
-                
-                  
-                  
-                )
-              ],
-            ),
-        
-        
-        
-        
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(MdiIcons.barcodeScan),
-      ), 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: Container(
-            height: 60,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const []
-            ),
-          ),
-        ),// This trailing comma makes auto-formatting nicer for build methods.
-    );
+                  );
+    
   }
 }
 
