@@ -14,7 +14,7 @@ import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:meu_mercado/main.dart';
 import 'package:moment_dart/moment_dart.dart';
-import './../../global.dart' as global;
+import '../../../global.dart' as global;
 import 'package:uuid/uuid.dart';
 final log = Logger();
 final db = Localstore.instance;

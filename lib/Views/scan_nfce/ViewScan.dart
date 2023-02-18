@@ -6,8 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:meu_mercado/main.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'GetData/GetDataNFCE.dart';
-import 'global.dart' as global;
+import '../../GetData/URL/FechNFCE.dart';
+import '../../global.dart' as global;
 
 
 var logger = Logger();
@@ -51,15 +51,32 @@ class _ViewScanState extends State<ViewScan> {
              
               child: TextButton(
                     style: ButtonStyle(
-                                 shape:  MaterialStateProperty.all<CircleBorder>(const CircleBorder()),
-                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
-                                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 238, 238, 238)),
+                        shape:  MaterialStateProperty.all<CircleBorder>(const CircleBorder()),
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+                        backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 238, 238, 238)),
                     ),
                     onPressed: () async {
                       await controller?.pauseCamera().then((value) =>   Navigator.pop(context));
                     },
                     child: const Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD),size: 40)
               ) ,
+            ),
+            Align(
+              alignment: Alignment.center,
+              heightFactor: 10,
+              child: SizedBox(
+                width: 300,
+                child:Text(
+                  "Aponte a camera para o QR CODE da nota fiscal",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 240, 240, 240)
+                  ),
+                )
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -138,7 +155,7 @@ class _ViewScanState extends State<ViewScan> {
             print(scanData.format);
             
             
-            getDataNFCE( url: scanData.code.toString(), context:context );
+            FechNFCE( url: scanData.code.toString(), context:context );
             
 
           

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:localstore/localstore.dart';
-import 'ViewScan.dart';
+import 'Views/scan_nfce/ViewScan.dart';
 import 'Views/card_nfce/card_nfce.dart';
 import 'global.dart' as global;
 import 'package:moment_dart/moment_dart.dart';
@@ -27,7 +27,7 @@ class MyData with ChangeNotifier {
     notifyListeners();
   }
 }
-// teste chave gpg windows
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -61,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
 
-  final db = Localstore.instance;
+
   List<Map<String, dynamic>> list_NFCEs = [ ];
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 

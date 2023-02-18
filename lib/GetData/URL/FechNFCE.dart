@@ -3,13 +3,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart' ;
 import 'package:http/http.dart' as http;
+import 'ParseUF/parseMG.dart';
 
-import 'ParseData/parseMG.dart';
 var log = Logger();
-class getDataNFCE{
+
+class FechNFCE{
   String url;
   BuildContext context;
-  getDataNFCE({ required this.url, required this.context, }){  
+  FechNFCE({ required this.url, required this.context, }){  
       
         Uri uri =   Uri.parse(url);
         var uf = uri.host.split(".");
