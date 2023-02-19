@@ -5,7 +5,7 @@ import 'package:logger/logger.dart' ;
 import 'package:http/http.dart' as http;
 import 'ParseUF/parseMG.dart';
 
-var log = Logger();
+
 
 class FechNFCE{
   String url;
