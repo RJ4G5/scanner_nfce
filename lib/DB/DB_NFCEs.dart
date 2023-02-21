@@ -34,49 +34,64 @@ int SimilaridadePorcent(String text1, String text2){
     return db.collection('NFCEs').get();
   }
 
-  getAllProd(){
-   /* List<dynamic> todosProdutos = [ ]; 
-                  List<dynamic> prod  = _nfce['ListaProdutos'];
-                  prod.forEach((element) {
-                    element['Chave'] =  _nfce['Chave'];
-                    todosProdutos.add(element);
-                  // print("${element["Descricao"]} --> ${_nfce['NomeEmpresarial']}");
-                    
-                  });*/
+ Future<List<dynamic>> getAllItens() async{
+      List<dynamic> todosProdutos = [ ]; 
+
+      Map<String, dynamic>? NFCEs = await getNFCEs();
+      NFCEs?.forEach((key, nfce) {
+
+          List<dynamic> nfce_itens  = nfce['ListaProdutos'];
+          nfce_itens.forEach((item) {
+                item['Chave'] =  nfce['Chave'];
+                todosProdutos.add(item);
+              // print("${element["Descricao"]} --> ${_nfce['NomeEmpresarial']}");
+                
+          });
+            
+      });
+
+    return todosProdutos  ;
+    
   }
 
 
-  void maisFrequentes(List<dynamic> list){
-      print("maisFrequentes");
-      List grupos = [];
+  Future<List<dynamic>> maisFrequentes() async{
+      
+    List grupos = [];
 
+    List<dynamic> NFCEs_itens = await getAllItens();
+
+    logger.d(NFCEs_itens.length);
     List<String> verificados = [];
 
-    for (int i = 0; i < list.length - 1; i++) {
-      List<dynamic> groupTemp = [];   
-      for (int j = i + 1; j < list.length; j++) {
-        if (SimilaridadePorcent(list[i]["Descricao"], list[j]["Descricao"]) > 70) { 
-          if(!verificados.contains(list[j]["ID"])){
-            verificados.add(list[j]["ID"]);
-            groupTemp.add(list[j]);
+    for (int i = 0; i < NFCEs_itens.length - 1; i++) {
+      List<dynamic> groupTemp = [];
+
+      for (int j = i + 1; j < NFCEs_itens.length; j++) {
+        if (SimilaridadePorcent(NFCEs_itens[i]["Descricao"], NFCEs_itens[j]["Descricao"]) > 70) { 
+          if(!verificados.contains(NFCEs_itens[j]["ID"])){
+            verificados.add(NFCEs_itens[j]["ID"]);
+            groupTemp.add(NFCEs_itens[j]);
           }      
           
         }
       }
       if(groupTemp.length > 0){
-          if(!verificados.contains(list[i]["ID"])){
-            verificados.add(list[i]["ID"]);
-            groupTemp.add(list[i]);
+          if(!verificados.contains(NFCEs_itens[i]["ID"])){
+            verificados.add(NFCEs_itens[i]["ID"]);
+            groupTemp.add(NFCEs_itens[i]);
           }
-          grupos.add(groupTemp);
+          grupos.add(groupTemp); 
       }
        
-       // logger.d(groupTemp);
+        //logger.d(groupTemp);
     }
 
 
-    logger.d(grupos);    
-      
+    return grupos;
 
   }
+
+
+
 }

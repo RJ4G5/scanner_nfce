@@ -64,6 +64,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
    openViewScan() {
     setState(() {
+      //list_NFCEs_Key.currentContext.
        Navigator.of(context,rootNavigator:true).push(MaterialPageRoute( builder: (context) =>  const ViewScan(), ));
     });
   }
@@ -92,7 +93,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         } 
           
 
-      });    
+      });   
+
+      db_nfcEs.maisFrequentes().then((value) => logger.d(value.length)); 
   }
   
   @override
@@ -100,6 +103,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     listNFCEs();
+    
   }
 
   @override
@@ -133,6 +137,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             AnimatedList(
                                 key: list_NFCEs_Key,
 
+
                                 initialItemCount:list_NFCEs.length ,
                                 itemBuilder: (context, index, animation) {
                                     
@@ -149,7 +154,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
 
                         floatingActionButton: FloatingActionButton(
-                            onPressed: openViewScan(),
+                            onPressed: openViewScan,
                             
                             child: const Icon(MdiIcons.barcodeScan),
                         ), 
