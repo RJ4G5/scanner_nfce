@@ -43,6 +43,9 @@ int SimilaridadePorcent(String text1, String text2){
           List<dynamic> nfce_itens  = nfce['ListaProdutos'];
           nfce_itens.forEach((item) {
                 item['Chave'] =  nfce['Chave'];
+                item["NomeEmpresarial"] = nfce['NomeEmpresarial'];
+                item['hora'] = nfce['hora'];
+                item['data'] = nfce['data'];
                 todosProdutos.add(item);
               // print("${element["Descricao"]} --> ${_nfce['NomeEmpresarial']}");
                 
@@ -61,7 +64,7 @@ int SimilaridadePorcent(String text1, String text2){
 
     List<dynamic> NFCEs_itens = await getAllItens();
 
-    logger.d(NFCEs_itens.length);
+    
     List<String> verificados = [];
 
     for (int i = 0; i < NFCEs_itens.length - 1; i++) {

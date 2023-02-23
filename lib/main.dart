@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 
 import 'DB/DB_NFCEs.dart';
+import 'Views/card_nfce/card_itens_mais_comprados.dart';
 import 'Views/scan_nfce/ViewScan.dart';
 import 'Views/card_nfce/card_nfce.dart';
 import 'global.dart' as global;
@@ -47,6 +48,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> list_NFCEs = [ ];
+  List<dynamic> list_MaisFreguentes = [ ];
   final GlobalKey<AnimatedListState> list_NFCEs_Key = GlobalKey<AnimatedListState>();
 
   DB_NFCEs db_nfcEs = DB_NFCEs();
@@ -95,7 +97,15 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
       });   
 
-      db_nfcEs.maisFrequentes().then((value) => logger.d(value.length)); 
+      
+  }
+
+  ListViewMaisFreguentes(){
+    db_nfcEs.maisFrequentes().then((grupos){
+
+        list_MaisFreguentes  = grupos;
+        
+    }); 
   }
   
   @override
@@ -103,6 +113,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     listNFCEs();
+    ListViewMaisFreguentes();
     
   }
 
@@ -127,13 +138,14 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                          
                           tabs: [                             
-                            Tab(text: 'Compras',),                          
+                            Tab(text: 'NFCEs',),                          
                             Tab(text: 'Mais comprados',),                            
                           ],
                         ),
                       ),
                       body: TabBarView(
                         children: [
+                          // ! list view nfces
                             AnimatedList(
                                 key: list_NFCEs_Key,
 
@@ -148,7 +160,15 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               }
 
                             ),
-                            Center(child: Text('')),
+                            //! list view mais comprados
+                            ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              itemCount: list_MaisFreguentes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                               
+                                return CardItensMaisComprados(list_MaisFreguentes[index]);
+                              }
+                            ),
                       
                         ],
                       ),
