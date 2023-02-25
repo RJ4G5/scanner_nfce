@@ -101,7 +101,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   ListViewMaisFreguentes(){
-    db_nfcEs.maisFrequentes().then((grupos){
+    db_nfcEs.FrequentesPorEmpresa().then((grupos){
 
         list_MaisFreguentes  = grupos;
         
@@ -114,6 +114,8 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
     listNFCEs();
     ListViewMaisFreguentes();
+
+  
     
   }
 
