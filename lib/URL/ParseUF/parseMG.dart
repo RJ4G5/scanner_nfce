@@ -16,13 +16,15 @@ import 'package:meu_mercado/main.dart';
 import 'package:moment_dart/moment_dart.dart';
 import '../../../global.dart' as global;
 import 'package:uuid/uuid.dart';
-final log = Logger();
-final db = Localstore.instance;
-var uuid = Uuid();
+
 class ParseMG{
   
+    final log = Logger();
+    final db = Localstore.instance;
+    final uuid = Uuid();
 
-    ParseMG(Response html, BuildContext context){
+
+    ParseMG(Response html){
 
          
             
@@ -103,12 +105,12 @@ class ParseMG{
 
                 if(doc == null){
                     global.homeState.addCardNFCE(nfce);
-                    db.collection('NFCEs').doc(chave).set(nfce);
-                    Navigator.pop(context);
-                }else{
+                    db.collection('NFCEs').doc(chave).set(nfce);                   
+                }else{ //
                     
-                  //  ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("NFC-e já cadastrada!"), duration: Duration(milliseconds: 3200), ), );
-                    Navigator.pop(context);
+                    global.ShowSnackBar("NFC-e já cadastrada!");
+                    
+                    
                 }
                 
             });

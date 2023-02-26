@@ -14,13 +14,13 @@ var logger = Logger();
 
 class ViewScan extends StatefulWidget {
 
- const  ViewScan({Key? key}) : super(key: key);
-  
-  @override
-  State<StatefulWidget> createState() => _ViewScanState();
+    const  ViewScan({Key? key}) : super(key: key);
+    
+    @override
+    State<StatefulWidget> createState() => ViewScanState();
 }
 
-class _ViewScanState extends State<ViewScan> {
+class ViewScanState extends State<ViewScan> {
 
   Barcode? result;
   QRViewController? controller;
@@ -36,6 +36,7 @@ class _ViewScanState extends State<ViewScan> {
   @override
   Widget build(BuildContext context) {
 
+    global.viewScanState = this;
    // var status =  Permission..request();
   
     return Scaffold(
@@ -56,7 +57,7 @@ class _ViewScanState extends State<ViewScan> {
                         backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 238, 238, 238)),
                     ),
                     onPressed: () async {
-                      await controller?.pauseCamera().then((value) =>   Navigator.pop(context));
+                      await controller?.pauseCamera().then((value) =>   Navigator.of(context).pop());
                     },
                     child: const Icon(MdiIcons.arrowLeft,color: Color(0xFFBDBDBD),size: 40)
               ) ,
@@ -154,21 +155,11 @@ class _ViewScanState extends State<ViewScan> {
             print(scanData.code);
             print(scanData.format);
 
-            showDialog(
-              barrierDismissible: false,
-              context:context,
-              builder:(BuildContext context){
-                  return AlertDialog(
-                          content: new Row(
-                            children: [
-                              CircularProgressIndicator(),
-                              Container(margin: EdgeInsets.only(left: 7),child:Text("Buscando informações..." )),
-                            ],),
-                        );
-              },
-            );
+          /*  */
+
+            Navigator.of(context).pop();
             
-            FechNFCE( url: scanData.code.toString(), context:context );
+            FechNFCE( url: scanData.code.toString() );
             
 
           

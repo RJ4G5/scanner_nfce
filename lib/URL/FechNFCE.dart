@@ -4,34 +4,39 @@ import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart' ;
 import 'package:http/http.dart' as http;
 import 'ParseUF/parseMG.dart';
-
+import '../../../global.dart' as global;
 
 
 class FechNFCE{
   String url;
-  BuildContext context;
-  FechNFCE({ required this.url, required this.context, }){  
+
+  FechNFCE({ required this.url, }){  
       
         Uri uri =   Uri.parse(url);
         var uf = uri.host.split(".");
        
+        global.AlertFechNFCE();
 
         switch(uf[uf.length-3]){
           case "mg":
 
-            log.d("Minas Gerais");
+            global.logger.d("Minas Gerais");
+
             http.get(uri).then((html){
-              ParseMG(html,context);
+              ParseMG(html);
+              global.CloseAlertFechNFCE();
+
             }).catchError((onError){
-              Navigator.pop(context);
+               global.ShowSnackBar("Erro inesperado durante a consulta!");
             });  
             
-          break;
-          case "es":
+          break;          
 
-            log.d("Epirito Santo");
-           // ParseMG(uri,context);
+          default:
+            global.ShowSnackBar("Ainda sem suporte para seu estado!");          
           break;
+
+
         }
 
   }
