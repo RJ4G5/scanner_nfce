@@ -22,6 +22,8 @@ class FechNFCE{
             log.d("Minas Gerais");
             http.get(uri).then((html){
               ParseMG(html,context);
+            }).catchError((onError){
+              Navigator.pop(context);
             });  
             
           break;

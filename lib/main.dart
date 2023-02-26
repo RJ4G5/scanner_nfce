@@ -60,8 +60,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       Timer(Duration(milliseconds: 300), (){
          //list_NFCEs.add(cardNFCE);   
          list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);
+         
          list_NFCEs.insert(0,cardNFCE);
          list_NFCEs_Key.currentState?.insertItem(0);
+         ListViewMaisFreguentes();
           setState(() {});
       });
       
@@ -69,7 +71,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
    openViewScan() {
     setState(() {
       //list_NFCEs_Key.currentContext.
-       Navigator.of(context,rootNavigator:true).push(MaterialPageRoute( builder: (context) =>  const ViewScan(), ));
+       Navigator.of(context).push(MaterialPageRoute( builder: (context) =>  const ViewScan(), ));
     });
   }
 

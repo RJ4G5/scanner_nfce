@@ -24,6 +24,9 @@ class ParseMG{
 
     ParseMG(Response html, BuildContext context){
 
+         
+            
+
             DOM.Document body = parse(html.body);
 
             // header do documento
@@ -71,7 +74,7 @@ class ParseMG{
               String data = emisao.split(" ")[0];
               String hora = emisao.split(" ")[1];
 
-              log.d("$data dfdf $hora");
+              
 
 
 
@@ -91,7 +94,7 @@ class ParseMG{
                         'hora': DateTime.now().toMoment().format("HH:mm")
                       }
                     
-                    };
+             };
 
             //global.homeState.addCardNFCE(nfce);
             
@@ -101,13 +104,18 @@ class ParseMG{
                 if(doc == null){
                     global.homeState.addCardNFCE(nfce);
                     db.collection('NFCEs').doc(chave).set(nfce);
+                    Navigator.pop(context);
+                }else{
+                    
+                  //  ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("NFC-e já cadastrada!"), duration: Duration(milliseconds: 3200), ), );
+                    Navigator.pop(context);
                 }
                 
             });
       
             
             
-            Navigator.pop(context);
+            
              
 
     }

@@ -149,11 +149,24 @@ class _ViewScanState extends State<ViewScan> {
     controller.resumeCamera();
   
     controller.scannedDataStream.listen((scanData) {
-        controller.pauseCamera().then((value)  {
+        controller.stopCamera().then((value)  {
        
             print(scanData.code);
             print(scanData.format);
-            
+
+            showDialog(
+              barrierDismissible: false,
+              context:context,
+              builder:(BuildContext context){
+                  return AlertDialog(
+                          content: new Row(
+                            children: [
+                              CircularProgressIndicator(),
+                              Container(margin: EdgeInsets.only(left: 7),child:Text("Buscando informações..." )),
+                            ],),
+                        );
+              },
+            );
             
             FechNFCE( url: scanData.code.toString(), context:context );
             
