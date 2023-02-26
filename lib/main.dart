@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Meu Mercado',
+      title: 'Scanner NFC-e',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
@@ -50,14 +50,16 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   List<Map<String, dynamic>> list_NFCEs = [ ];
   List<dynamic> list_MaisFreguentes = [ ];
   final GlobalKey<AnimatedListState> list_NFCEs_Key = GlobalKey<AnimatedListState>();
+  ScrollController list_NFCEs_ScrollController = ScrollController(initialScrollOffset: 0,);
 
   DB_NFCEs db_nfcEs = DB_NFCEs();
 
 
   void addCardNFCE(Map<String, dynamic> cardNFCE){
 
-      Timer(Duration(milliseconds: 200), (){
-         //list_NFCEs.add(cardNFCE);    
+      Timer(Duration(milliseconds: 300), (){
+         //list_NFCEs.add(cardNFCE);   
+         list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);
          list_NFCEs.insert(0,cardNFCE);
          list_NFCEs_Key.currentState?.insertItem(0);
           setState(() {});
@@ -91,6 +93,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               });
             
                   // _this.maisFrequentes(todosProdutos);
+              
               setState(() {});
         } 
           
@@ -131,15 +134,19 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     child: Scaffold(
                       appBar: AppBar(
                         //toolbarHeight: 60,
-                        title: Text("Meu Mercado"),
+                        title: Text("Scanner NFC-e"),
                         backgroundColor: Color(0xff607D8B),
                         bottom: TabBar(
+
                           indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50), // Creates border
+
+                              borderRadius: BorderRadius.circular(5), // Creates border
                               color: Color.fromARGB(43, 255, 255, 255),
+
                           ),
                          
-                          tabs: [                             
+                          tabs: [ 
+                                                        
                             Tab(text: 'NFCEs',),                          
                             Tab(text: 'Mais comprados',),                            
                           ],
@@ -149,6 +156,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         children: [
                           // ! list view nfces
                             AnimatedList(
+                                controller: list_NFCEs_ScrollController,
                                 key: list_NFCEs_Key,
 
 
@@ -177,12 +185,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
                         floatingActionButton: FloatingActionButton(
                             onPressed: openViewScan,
-                            
+                            backgroundColor: Color(0xff455A64),
                             child: const Icon(MdiIcons.barcodeScan),
                         ), 
                         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                         bottomNavigationBar: BottomAppBar(
                             shape: const CircularNotchedRectangle(),
+                            
                             notchMargin: 10,
                             child: Container(
                               height: 60,

@@ -21,6 +21,7 @@ class CardItensMaisComprados extends StatelessWidget{
                 padding:EdgeInsets.all(5) ,
                 // ignore: prefer_const_constructors
                 decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
                       color: Color(0xffffffff),
                       boxShadow: const [
                             BoxShadow(
@@ -35,9 +36,9 @@ class CardItensMaisComprados extends StatelessWidget{
                 child: FixedTimeline.tileBuilder(
                     theme: TimelineThemeData(
                           nodePosition: 0,
-                          color: Color(0xFF1976D2),
+                          color: Color.fromARGB(144, 84, 110, 122),
                           indicatorTheme: IndicatorThemeData(
-                              position:0,
+                              position:0.1,
                               size: 18.0,
                           ),
                           connectorTheme: ConnectorThemeData(
@@ -46,9 +47,8 @@ class CardItensMaisComprados extends StatelessWidget{
                     ),
 
                     builder: TimelineTileBuilder.fromStyle(
-                        contentsBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
+                        contentsBuilder: (context, index) =>  Container(
+                            padding: const EdgeInsets.all(10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -57,7 +57,7 @@ class CardItensMaisComprados extends StatelessWidget{
                               ],
                             ),
                           ),
-                        ),
+                        
                         itemCount: grupo.length,
                     )
                 ),

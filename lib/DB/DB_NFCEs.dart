@@ -107,7 +107,7 @@ int SimilaridadePorcent(String text1, String text2){
 
           
         List<dynamic> a =  await reorganizarPorEmpresa(grupo);
-      
+         a[0]["Itens"] = await sortPorData(a[0]["Itens"]);
         frequentesPorEmpresa.add(a);
 
          
@@ -121,14 +121,29 @@ int SimilaridadePorcent(String text1, String text2){
   }
 
 
+  sortPorData(List<dynamic> grupo){
+        List<dynamic> list = List.from(grupo);
+        list.sort((a, b) {
+
+            var split_a = a['data'].split("/");
+            var split_b = b['data'].split("/");
+            // o formato dever ser  ano-mes-dia "${split_a[2]} - ${split_a[1]} - ${split_a[0]}"
+            var dataA = DateTime.parse("${split_a[2]}-${split_a[1]}-${split_a[0]}").millisecondsSinceEpoch;  //FormatException: Invalid date format
+            var dataB = DateTime.parse("${split_b[2]}-${split_b[1]}-${split_b[0]}").millisecondsSinceEpoch;
+            return dataA.compareTo(dataB);
+        }); // organiza os itens por data
+
+        return list;
+
+  }
 
 
-  reorganizarPorEmpresa(List<dynamic> grupo){ //FUNÇÃO REORGANIZA CADA GRUPO DE PRODUTOS IGUAIS POR EMPRESA 
+  reorganizarPorEmpresa(List<dynamic> grupo) { //FUNÇÃO REORGANIZA CADA GRUPO DE PRODUTOS IGUAIS POR EMPRESA 
       List<dynamic> list = [];
      List<String> verificados = [];
 
 
-     grupo.sort((a, b) => a["data"].compareTo(b["data"])); // organiza os itens por data
+     
 
      for(int i = 0; i < grupo.length ; i++){
 
