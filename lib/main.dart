@@ -148,6 +148,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     length: 2,
                     child: Scaffold(
                       appBar: AppBar(
+                        
                         //toolbarHeight: 60,
                         title: Text("Scanner NFC-e"),
                         backgroundColor: Color(0xff607D8B),
