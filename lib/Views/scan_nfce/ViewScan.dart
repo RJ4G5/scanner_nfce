@@ -4,7 +4,6 @@ import 'package:logger/logger.dart' ;
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:meu_mercado/main.dart';
-import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../URL/FechNFCE.dart';
 import '../../global.dart' as global;

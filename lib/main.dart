@@ -48,9 +48,13 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> list_NFCEs = [ ];
-  List<dynamic> list_MaisFreguentes = [ ];
+  List<dynamic> list_MaisFrequentes = [ ];
   final GlobalKey<AnimatedListState> list_NFCEs_Key = GlobalKey<AnimatedListState>();
   ScrollController list_NFCEs_ScrollController = ScrollController(initialScrollOffset: 0,);
+
+  bool empty_nfce = true;
+  bool empty_MaisFrequentes = true;
+
 
   DB_NFCEs db_nfcEs = DB_NFCEs();
 
@@ -83,8 +87,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       final _this = this;
 
       db_nfcEs.getNFCEs().then((docs) {
+        
           if(docs != null){
-              
+              empty_nfce = false;
               list_NFCEs.clear();
               int index = 0;
               final reverseDocs = LinkedHashMap.fromEntries(docs.entries.toList().reversed);
@@ -97,7 +102,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   // _this.maisFrequentes(todosProdutos);
               
               setState(() {});
-        } 
+        }else{
+          empty_nfce = true;
+        }
+          
           
 
       });   
@@ -108,7 +116,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   ListViewMaisFreguentes(){
     db_nfcEs.FrequentesPorEmpresa().then((grupos){
 
-        list_MaisFreguentes  = grupos;
+        list_MaisFrequentes  = grupos;
+
+        if(grupos.length > 0)
+          empty_MaisFrequentes = false;
+        else
+          empty_MaisFrequentes = true;
         
     }); 
   }
@@ -157,6 +170,21 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       body: TabBarView(
                         children: [
                           // ! list view nfces
+                            empty_nfce ?
+                            // ! empty?
+                            Container(
+                              margin: EdgeInsets.only(top: 40),
+                              child: Column(
+                                children: [
+                                  Text("Você ainda não escaneou nenhuma nota!", style: TextStyle(color: Color(0xff546E7A), fontWeight: FontWeight.bold, fontSize: 18 ),),
+                                  Image.asset("assets/scan.gif")
+                                ],
+                              ),
+
+                            )
+
+                            : // ! else
+
                             AnimatedList(
                                 controller: list_NFCEs_ScrollController,
                                 key: list_NFCEs_Key,
@@ -173,12 +201,27 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
                             ),
                             //! list view mais comprados
+
+                            empty_MaisFrequentes == 0 ?
+                            // ! empty?
+                            Container(
+                              margin: EdgeInsets.only(top: 40),
+                              child: Column(
+                                children: [
+                                  Text("Dados insuficientes para gerar relatorio!", style: TextStyle(color: Color(0xff546E7A), fontWeight: FontWeight.bold, fontSize: 18 ),),
+                                  Image.asset("assets/empty-cart.png")
+                                ],
+                              ),
+
+                            )
+
+                            : // ! else
                             ListView.builder(
                               padding: const EdgeInsets.all(8),
-                              itemCount: list_MaisFreguentes.length,
+                              itemCount: list_MaisFrequentes.length,
                               itemBuilder: (BuildContext context, int index) {
                                
-                                return CardItensMaisComprados(list_MaisFreguentes[index]);
+                                return CardItensMaisComprados(list_MaisFrequentes[index]);
                               }
                             ),
                       

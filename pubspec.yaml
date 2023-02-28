@@ -42,11 +42,8 @@ dependencies:
   html: ^0.15.1
   http: ^0.13.5
   logger: ^1.1.0
-  localstore: ^1.2.3
-  easy_mask: ^2.0.1
-  provider: ^6.0.5
+  localstore: ^1.2.3  
   moment_dart: ^0.16.0
-  animate_do: ^3.0.2
   ticketview: ^1.0.0
   data_table_2: ^2.3.11
   uuid: ^3.0.7
@@ -75,8 +72,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+   - assets/scan.gif
+   - assets/empty-cart.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

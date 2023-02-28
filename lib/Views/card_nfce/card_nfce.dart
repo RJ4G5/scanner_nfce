@@ -1,10 +1,7 @@
-import 'dart:math';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:meu_mercado/Views/ticket/Ticket.dart';
 import 'package:moment_dart/moment_dart.dart';
-import 'package:ticketview/ticketview.dart';
 import './../../global.dart' as global;
 class CardNFCE extends StatelessWidget {
 
