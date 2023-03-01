@@ -59,7 +59,23 @@ int SimilaridadePorcent(String text1, String text2){
 
 
   Future<List<dynamic>> maisFrequentes() async{  // FUNÇÃO UTILIZA A FUNÇÃO SimilaridadePorcent PARA AGRUPAR TODOS OS PRODUTOS COM SIMILARIDADE IGUAIS
-      
+    
+    /*
+
+      ESTA FUNÇÃO CRIA UMA CRIA UMA LISTA DE GRUPOS, CADA GRUPO É UMA LISTA DE PRODUTOS SIMILARES
+      LISTA[
+        [
+          BANANA 2K
+          BANANA PRATA 1K
+        ],
+        [
+          FEIJAO CARIOCA 1K
+          FEIJAO VERMELHO 1K
+        ]
+      ]
+
+    */
+
     List grupos = [];
 
     List<dynamic> NFCEs_itens = await getAllItens();
@@ -67,11 +83,11 @@ int SimilaridadePorcent(String text1, String text2){
     
     List<String> verificados = [];
 
-    for (int i = 0; i < NFCEs_itens.length - 1; i++) {
+    for (int i = 0; i < NFCEs_itens.length - 1 ; i++) {
       List<dynamic> groupTemp = [];
 
       for (int j = i + 1; j < NFCEs_itens.length; j++) {
-        if (SimilaridadePorcent(NFCEs_itens[i]["Descricao"], NFCEs_itens[j]["Descricao"]) > 70) { 
+        if (SimilaridadePorcent(NFCEs_itens[i]["Descricao"], NFCEs_itens[j]["Descricao"]) >= 70) {  // compara a porcentagem de similaridade, se [i]["Descricao"] for mais que 70% de j, ele agrupa
           if(!verificados.contains(NFCEs_itens[j]["ID"])){
             verificados.add(NFCEs_itens[j]["ID"]);
             groupTemp.add(NFCEs_itens[j]);
@@ -80,10 +96,10 @@ int SimilaridadePorcent(String text1, String text2){
         }
       }
 
-      if(groupTemp.length > 0){
+      if(groupTemp.length > 0){ // aqui verifica se houve produtos similares do [i]["Descricao"]
           if(!verificados.contains(NFCEs_itens[i]["ID"])){
             verificados.add(NFCEs_itens[i]["ID"]);
-            groupTemp.add(NFCEs_itens[i]);
+            groupTemp.add(NFCEs_itens[i]); // se houve adiciona o [i]["Descricao"] junto com os outre similares
           }
           grupos.add(groupTemp); 
       }
@@ -103,8 +119,15 @@ int SimilaridadePorcent(String text1, String text2){
 
       List<dynamic> frequentesPorEmpresa = [];
       //logger.d(grupos_frequentes);
-       grupos_frequentes.forEach((grupo) async {
+       grupos_frequentes.forEach((grupo) async { // NESTA PARTE, UTILIZA A FUNÇÃO reorganizarPorEmpresa PARA REORGANIZAR POR EMPRESA CADA GRUPO
+       // COM PRODUTOS SIMILARES E EMPRESAS DIFERENTES
+       /*        
+          SUPERMERCADO A
+            BANANA PRATA 1K
+          SUPERMERCADO B
+            BANANA CATURRA 1K      
 
+       */
           
         List<dynamic> a =  await reorganizarPorEmpresa(grupo);
          a[0]["Itens"] = await sortPorData(a[0]["Itens"]);
@@ -139,10 +162,10 @@ int SimilaridadePorcent(String text1, String text2){
 
 
   reorganizarPorEmpresa(List<dynamic> grupo) { //FUNÇÃO REORGANIZA CADA GRUPO DE PRODUTOS IGUAIS POR EMPRESA 
-      List<dynamic> list = [];
-     List<String> verificados = [];
-
-
+    
+    
+    List<dynamic> list = [];
+    List<String> verificados = [];
      
 
      for(int i = 0; i < grupo.length ; i++){

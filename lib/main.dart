@@ -52,18 +52,19 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final GlobalKey<AnimatedListState> list_NFCEs_Key = GlobalKey<AnimatedListState>();
   ScrollController list_NFCEs_ScrollController = ScrollController(initialScrollOffset: 0,);
 
-  bool empty_nfce = true;
-  bool empty_MaisFrequentes = true;
+  bool empty_nfce = false;
+  bool empty_MaisFrequentes = false;
 
 
   DB_NFCEs db_nfcEs = DB_NFCEs();
 
 
   void addCardNFCE(Map<String, dynamic> cardNFCE){
-
+      list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);
+      
       Timer(Duration(milliseconds: 300), (){
          //list_NFCEs.add(cardNFCE);   
-         list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);
+         
          
          list_NFCEs.insert(0,cardNFCE);
          list_NFCEs_Key.currentState?.insertItem(0);
