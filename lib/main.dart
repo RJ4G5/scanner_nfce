@@ -105,6 +105,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               setState(() {});
         }else{
           empty_nfce = true;
+          setState(() {});
         }
           
           
@@ -118,11 +119,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     db_nfcEs.FrequentesPorEmpresa().then((grupos){
 
         list_MaisFrequentes  = grupos;
-
-        if(grupos.length > 0)
-          empty_MaisFrequentes = false;
-        else
-          empty_MaisFrequentes = true;
+        
+         setState(() {
+            if(grupos.length > 0)
+              empty_MaisFrequentes = false;
+            else
+              empty_MaisFrequentes = true;
+         });
         
     }); 
   }
@@ -204,13 +207,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             ),
                             //! list view mais comprados
 
-                            empty_MaisFrequentes == 0 ?
+                            empty_MaisFrequentes ?
                             // ! empty?
                             Container(
                               margin: EdgeInsets.only(top: 40),
                               child: Column(
                                 children: [
-                                  Text("Dados insuficientes para gerar relatorio!", style: TextStyle(color: Color(0xff546E7A), fontWeight: FontWeight.bold, fontSize: 18 ),),
+                                  Text("Dados insuficientes para gerar relatório!", style: TextStyle(color: Color(0xff546E7A), fontWeight: FontWeight.bold, fontSize: 18 ),),
                                   Image.asset("assets/empty-cart.png")
                                 ],
                               ),

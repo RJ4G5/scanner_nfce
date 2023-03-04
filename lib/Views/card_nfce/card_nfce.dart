@@ -24,7 +24,7 @@ class CardNFCE extends StatelessWidget {
   Widget build(BuildContext context) {
    
    
-     print("index: $index");
+    
     return InkWell( 
                 onTap: () {  
                   print(nfce['NomeEmpresarial']);  
