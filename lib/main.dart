@@ -60,7 +60,11 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
 
   void addCardNFCE(Map<String, dynamic> cardNFCE){
-      list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);
+      
+        list_NFCEs_ScrollController.animateTo(list_NFCEs_ScrollController.position.maxScrollExtent,duration: Duration(milliseconds: 200), curve: Curves.ease);      
+     
+      
+      
       
       Timer(Duration(milliseconds: 300), (){
          //list_NFCEs.add(cardNFCE);   

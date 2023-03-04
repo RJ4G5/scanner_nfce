@@ -27,6 +27,7 @@ class FechNFCE{
               global.CloseAlertFechNFCE();
 
             }).catchError((onError){
+               global.CloseAlertFechNFCE();
                global.ShowSnackBar("Erro inesperado durante a consulta!");
             });  
             
