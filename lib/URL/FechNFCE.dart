@@ -20,7 +20,8 @@ class FechNFCE{
         switch(uf[uf.length-3]){
           case "mg":
 
-            global.logger.d("Minas Gerais");
+           
+            global.logger.d(uri);
            
 
             http.get(uri).then((html){

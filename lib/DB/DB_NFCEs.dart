@@ -107,7 +107,7 @@ int SimilaridadePorcent(String text1, String text2){
         //logger.d(groupTemp);
     }
 
-
+   
     return grupos;
 
   }
@@ -116,10 +116,10 @@ int SimilaridadePorcent(String text1, String text2){
 
   Future<List<dynamic>> FrequentesPorEmpresa() async{ // retorna uma lista de grupos reoganizados por empresa
       List<dynamic> grupos_frequentes = await maisFrequentes();
-
+        
       List<dynamic> frequentesPorEmpresa = [];
       //logger.d(grupos_frequentes);
-       grupos_frequentes.forEach((grupo) async { // NESTA PARTE, UTILIZA A FUNÇÃO reorganizarPorEmpresa PARA REORGANIZAR POR EMPRESA CADA GRUPO
+       grupos_frequentes.forEach((grupo)  { // NESTA PARTE, UTILIZA A FUNÇÃO reorganizarPorEmpresa PARA REORGANIZAR POR EMPRESA CADA GRUPO
        // COM PRODUTOS SIMILARES E EMPRESAS DIFERENTES
        /*        
           SUPERMERCADO A
@@ -129,8 +129,8 @@ int SimilaridadePorcent(String text1, String text2){
 
        */
           
-        List<dynamic> a =  await reorganizarPorEmpresa(grupo);
-         a[0]["Itens"] = await sortPorData(a[0]["Itens"]);
+        List<dynamic> a =   reorganizarPorEmpresa(grupo);
+         a[0]["Itens"] =  sortPorData(a[0]["Itens"]);
         frequentesPorEmpresa.add(a);
 
          
@@ -138,7 +138,7 @@ int SimilaridadePorcent(String text1, String text2){
       
      });
      
-
+print(frequentesPorEmpresa.length);
 
       return frequentesPorEmpresa;
   }
