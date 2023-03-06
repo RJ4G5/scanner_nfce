@@ -28,6 +28,7 @@ class ParseMG{
             
 
             DOM.Document body = parse(html.body);
+            
 
             // header do documento
             var header = body.querySelectorAll(".ui-outputpanel table")[0].querySelectorAll("tr");

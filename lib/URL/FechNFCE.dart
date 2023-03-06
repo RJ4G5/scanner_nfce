@@ -21,8 +21,10 @@ class FechNFCE{
           case "mg":
 
             global.logger.d("Minas Gerais");
+           
 
             http.get(uri).then((html){
+              
               ParseMG(html);
               global.CloseAlertFechNFCE();
 

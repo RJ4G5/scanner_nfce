@@ -60,8 +60,8 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
 
   void addCardNFCE(Map<String, dynamic> cardNFCE){
-      
-        list_NFCEs_ScrollController.animateTo(list_NFCEs_ScrollController.position.maxScrollExtent,duration: Duration(milliseconds: 200), curve: Curves.ease);      
+        if(list_NFCEs_ScrollController.hasClients)
+          list_NFCEs_ScrollController.animateTo(0,duration: Duration(milliseconds: 200), curve: Curves.ease);      
      
       
       
@@ -73,7 +73,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
          list_NFCEs.insert(0,cardNFCE);
          list_NFCEs_Key.currentState?.insertItem(0);
          ListViewMaisFreguentes();
-          setState(() {});
+         if(list_NFCEs.length > 0)
+              empty_nfce = false;
+         setState(() {});
       });
       
   }
